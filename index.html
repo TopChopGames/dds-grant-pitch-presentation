@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="css/slides-extended.css" />
+    <link rel="stylesheet" href="dist/theme/solarized.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+    <script type="text/javascript">
+        function pageInIframe() {
+            return (window.location !== window.parent.location);
+        }
+
+        let forgetPop = true;
+        function onPopState(event) {
+            if(forgetPop){
+                forgetPop = false;
+            } else if( pageInIframe()) {
+                parent.postMessage(event.target.location.href, "app://obsidian.md");
+            }
+        }
+        window.onpopstate = onPopState;
+        window.onmessage = event => {
+            if(event.data == "reload"){
+                window.document.location.reload();
+            }
+            forgetPop = true;
+        }
+
+        function fitElements() {
+            const itemsToFit = document.getElementsByClassName('fitText');
+            for (const item in itemsToFit) {
+                if (Object.hasOwnProperty.call(itemsToFit, item)) {
+                    const element = itemsToFit[item];
+                    fitElement(element, 1, 1000);
+                    element.classList.remove('fitText');
+                }
+            }
+        }
+
+        function fitElement(element, start, end) {
+
+            let size = (end + start) / 2;
+            element.style.fontSize = `${size}px`;
+
+            if (Math.abs(start - end) < 1) {
+                while (element.scrollHeight > element.offsetHeight) {
+                    size--;
+                    element.style.fontSize = `${size}px`;
+                }
+                return;
+            }
+
+            if (element.scrollHeight > element.offsetHeight) {
+                fitElement(element, start, size);
+            } else {
+                fitElement(element, size, end);
+            }
+        }
+
+        document.onreadystatechange = () => {
+            fitElements();
+            if (document.readyState === 'complete') {
+                if (pageInIframe() && window.location.href.indexOf("?export") != -1){
+                    parent.postMessage(event.target.location.href, "app://obsidian.md");
+                }
+                if (window.location.href.indexOf("print-pdf") != -1){
+                    let stateCheck = setInterval(() => {
+                        clearInterval(stateCheck);
+                        window.print();
+                    }, 250);
+                }
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="3-Resources/Media/2026-02-09-event_header.png" alt="" style="object-fit: scale-down">
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.5em" -->
+*A roguelite dungeon crawler where you manage a cosy pastry shop, gather ingredients from candy-themed dungeons, and fight to save your bakery from a greedy corporate landlord.*  
+
+**Roguelite Dungeon Crawler / Shop Management** | PC (Steam) | Godot 4 
+
+**Top Chop Games** | Queensland, Australia | Screen Queensland Games Grant | February 2026
+</div>
+</div>
+
+<aside class="notes"><p>Title slide. Capsule art as hero image, one-line pitch, genre, studio info.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Game
+
+Play as **Crispin Crumble**, a baker whose shop hides portals to candy-themed dungeons. A greedy corporate landlord keeps raising the rent, delve deeper, craft better desserts, and rally the town to fight back.
+
+<a href="https://www.youtube.com/watch?v=2OwTzldoivY" target="_blank">
+<img src="3-Resources/Media/2026-02-09-ign-trailer-thumbnail-with-play-button.png" alt="" style="width: 600px; object-fit: fill">
+
+</a>
+</div>
+
+<aside class="notes"><p>Elevator pitch with capsule art. Keep it simple — the next slide covers features.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Key Features
+
+<img src="3-Resources/Media/2026-02-09-dds-dual-gameplay.gif" alt="" style="object-fit: scale-down">
+
+
+<split even gap="2">
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+- Dual gameplay: dungeon crawling + shop management
+- Candy-themed combat with baking weapons
+- Permanent progression through shop upgrades
+
+</div>
+
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+- Weekly rent creates narrative urgency
+- NPC relationship system tied to story
+- 3D pixel art created in Blockbench
+
+</div>
+
+
+
+</split>
+</div>
+
+<aside class="notes"><p>Six features at a glance. The image should visually reinforce the dual-genre hook.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Core Gameplay Loop
+
+
+<img src="3-Resources/Media/2026-02-06-DDS-CoreGameplayLoopDiagram.png" alt="" style="width: 500px; object-fit: fill">
+</div>
+
+<aside class="notes"><p>The diagram shows how dungeon crawling, shop management, and town visits feed into each other.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Combat
+
+Simple yet fun combat that provides a challenge and keeps things fresh with a variety of weapons, abilities and upgrades.
+
+<split even gap="2">
+
+<div class="block">
+
+<img src="3-Resources/Media/2026-02-06-saltpeppershotgun.gif" alt="" style="width: 400px; object-fit: fill">
+
+
+</div>
+
+
+
+<div class="block">
+
+<img src="3-Resources/Media/2026-02-06-sugar_whip.gif" alt="" style="width: 400px; object-fit: fill">
+
+
+</div>
+
+
+
+</split>
+
+**4 weapons** | **7 abilities** | **17 passive buffs** (Snacks) found during runs for roguelite variety
+</div>
+
+<aside class="notes"><p>GIFs show weapons in action. The video should demonstrate weapon switching, abilities, and enemy variety.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Shop Management
+
+
+
+<split even gap="2">
+
+<div class="block">
+
+<img src="3-Resources/Media/2026-02-09-run-a-shop.gif" alt="" style="object-fit: scale-down">
+
+
+</div>
+
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+- **Craft** desserts from dungeon ingredients
+- **Stock** displays and serve customers
+- **Expand** with Cafe and Relic Room
+- **Build relationships** with town NPCs
+
+</div>
+
+
+
+</split>
+</div>
+
+<aside class="notes"><p>Expansion rooms (Cafe dine-in mini-game, Relic Room bartering) and relationship system differentiate from competitors.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Visual Overview
+
+<split even gap="2">
+
+<div class="block">
+
+**The Shop**
+<img src="3-Resources/Media/2026-02-06-screenshot-takeawayshop.png" alt="" style="object-fit: scale-down">
+
+
+</div>
+
+
+
+<div class="block">
+
+**The Dungeon**
+<img src="3-Resources/Media/2026-02-06-dungeon.png" alt="" style="object-fit: scale-down">
+
+
+</div>
+
+
+
+</split>
+
+**3D pixel art** in Blockbench, a distinctive identity that stands apart from the 2D pixel art dominating the genre.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Progression & Challenge
+
+<split even gap="3">
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Per Run**
+- Collect ingredients and relics
+- Find Snacks (temporary buffs)
+- Risk vs. reward: go deeper or return?
+
+</div>
+
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Per Week**
+- Craft and sell desserts
+- Pay rent or face consequences
+- Purchase permanent upgrades
+
+</div>
+
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Campaign** 
+- Expand bakery (Cafe, Relic Room)
+- Unlock weapons and abilities
+- Rally NPCs against SweetCo
+
+</div>
+
+
+
+</split>
+
+Difficulty scales through harder dungeon floors, escalating rent, and new mechanics introduced over time. <!-- .element: style="font-size: 0.7em" -->
+</div>
+
+<aside class="notes"><p>Three tiers of progression keep players engaged at every timescale.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Narrative
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Bramble Creek:** a small town under threat from **SweetCo**, a corporation that takes over small towns and turns them into cookie-cutter tourist traps. 
+
+</div>
+
+
+<split even gap="3">
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Act 1: The Awakening**
+SweetCo pressures landlord Alfie. Antagonist **Marzi** doubles the rent.
+
+</div>
+
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Act 2: The Struggle**
+Rent escalates. Marzi repossesses furniture. **Lollis** reveals SweetCo's pattern.
+
+</div>
+
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Act 3: The Uprising**
+The **Baker's Guild** forms. Rally community support to stand against SweetCo.
+
+</div>
+
+
+
+</split>
+
+<split even gap="3">
+<div class="block">
+
+<img src="3-Resources/Media/2026-02-09-marzi-rolling_eyes.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+<div class="block">
+
+<img src="3-Resources/Media/2026-02-09-lollis-worried.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+<div class="block">
+
+<img src="3-Resources/Media/2026-02-09-crispin-thinking.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+</split>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Audio & Sound
+
+<split even gap="2">
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.6em" -->
+
+**Music**
+- Cosy music for shop/town
+- Energetic candy-themed dungeon tracks
+- Intense yet playful boss themes
+
+</div>
+
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.6em" -->
+
+**Sound Design**
+- Satisfying weapon impacts per enemy
+- Themed ability SFX (crunchy baguettes, bouncing jawbreakers)
+- Rich shop and town ambience
+
+</div>
+
+
+
+</split>
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+<img src="3-Resources/Media/2026-02-10-portrait-anders-kile.png" alt="" style="width: 200px; object-fit: fill">
+
+>Original Soundtrack by QLD-based Composer Anders Kile Groenningsaeter
+</div>
+</div>
+
+<aside class="notes"><p>The soundtrack balances cosy shop life and energetic dungeon combat.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Development Team
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Top Chop Games** — Queensland-based indie studio, **6 years** operating
+
+</div>
+
+
+<split even gap="2">
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Core Team**
+
+| Role | Focus |
+|------|-------|
+| **Lead Developer** (Full-Time) | Programming, direction, project management |
+| **Developer** (Part-Time) | Feature implementation, systems |
+
+
+</div>
+
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Track Record**
+- **100+ million downloads** across previous titles
+- **Self-funded** from prior commercial success
+- **6 years** of production and contractor workflows
+- **Data-driven:** Beta with 50 contributors, 2 expert reviews
+
+</div>
+
+
+
+</split>
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Contractors:** Art, Music, Video, QA, Localisation 
+
+</div>
+</div>
+
+<aside class="notes"><p>Small but experienced team. 100M downloads demonstrates ability to ship and market at scale.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Thank You
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 0.7em" -->
+
+**Steam:** [Dungeons & Desserts on Steam](https://store.steampowered.com/app/2996900/Dungeons__Desserts/)
+
+**Trailer (IGN):** [Official Announcement Trailer](https://www.youtube.com/watch?v=2OwTzldoivY)
+
+**Press Kit:** [press.topchopgames.com](https://press.topchopgames.com/dungeons-desserts)
+
+
+
+**Top Chop Games** | Queensland, Australia | ed@topchopgames.com
+
+</div>
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/obsidian-markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/mermaid/mermaid.js"></script>
+    <script src="plugin/chart/chart.umd.js"></script>
+    <script src="plugin/chart/plugin.js"></script>
+    <script src="plugin/customcontrols/plugin.js"></script>
+
+    <script>
+        function extend() {
+            const target = {};
+            for (let i = 0; i < arguments.length; i++) {
+                const source = arguments[i];
+                for (const key in source) {
+                    if (source.hasOwnProperty(key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        }
+
+        function isLight(color) {
+            let hex = color.replace('#', '');
+
+            // convert #fff => #ffffff
+            if (hex.length == 3) {
+                hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+            }
+
+            const c_r = parseInt(hex.substr(0, 2), 16);
+            const c_g = parseInt(hex.substr(2, 2), 16);
+            const c_b = parseInt(hex.substr(4, 2), 16);
+            const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+            return brightness > 155;
+        }
+
+        const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+
+        if (isLight(bgColor)) {
+            document.body.classList.add('has-light-background');
+        } else {
+            document.body.classList.add('has-dark-background');
+        }
+
+        // default options to init reveal.js
+        const defaultOptions = {
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'default', // none/fade/slide/convex/concave/zoom
+            plugins: [
+                ObsidianMarkdown,
+                RevealHighlight,
+                RevealZoom,
+                RevealNotes,
+                RevealMath.KaTeX,
+                RevealMermaid,
+                RevealChart,
+                RevealCustomControls,
+            ],
+            allottedTime: "120",
+
+            katex: {
+                local: 'plugin/math/katex',
+                extensions: ["mhchem"],
+            },
+            markdown: {
+                gfm: true,
+            },
+            mermaid: {
+                theme: isLight(bgColor) ? 'default' : 'dark',
+            },
+            customcontrols: {
+                controls: [
+                ]
+            },
+        };
+
+        if ( pageInIframe() ) {
+            defaultOptions.scrollActivationWidth = 5;
+        }
+
+        // options from URL query string
+        const queryOptions = Reveal().getQueryHash() || {};
+
+        const options = extend(defaultOptions, {"controls":true,"progress":true,"slideNumber":true,"center":true,"transition":"slide","transitionSpeed":"default","width":960,"height":700,"margin":0.12}, queryOptions);
+    </script>
+
+    <script>
+      /**
+       * KaTeX Equation Numbering Note
+       * 
+       * KaTeX maintains a global equation counter for \begin{equation} environments.
+       * When navigating between slides, reveal.js math plugin may re-render math, causing 
+       * equation numbers to change randomly.
+       * 
+       * Note: Regular $$ blocks don't have equation numbers - only \begin{equation} does.
+       * 
+       * If you experience issues with equation numbers changing:
+       * Use manual \tag{} commands: \begin{equation}\tag{1} ... \end{equation}
+       */
+      
+      Reveal.initialize(options);
+    </script>
+    <!-- created with Slides Extended reveal.html template -->
+</body>
+</html>
